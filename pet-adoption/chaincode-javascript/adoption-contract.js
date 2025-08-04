@@ -3,29 +3,28 @@
 const { Contract } = require('fabric-contract-api');
 
 class AdoptionContract extends Contract {
+    constructor() {
+        super('AdoptionContract');
+        console.log('[CHAINCODE] AdoptionContract constructor called.');
+    }
+
     async initLedger(ctx) {
-        const adopters = Array(16).fill('');
-        await ctx.stub.putState('adopters', Buffer.from(JSON.stringify(adopters)));
+        console.log('[CHAINCODE] initLedger invoked.');
+        try {
+            const adopters = new Array(16).fill('');
+            console.log('[CHAINCODE] Generated empty adopters array:', adopters);
+            await ctx.stub.putState('adopters', Buffer.from(JSON.stringify(adopters)));
+            console.log('[CHAINCODE] Successfully wrote adopters to world state.');
+        } catch (err) {
+            console.error('[CHAINCODE] Error in initLedger:', err);
+            throw new Error(`[CHAINCODE] initLedger failed: ${err.message}`);
+        }
     }
 
-    async adopt(ctx, petId) {
-        petId = parseInt(petId);
-        if (petId < 0 || petId > 15) throw new Error('Invalid pet ID');
-
-        const adoptersBytes = await ctx.stub.getState('adopters');
-        if (!adoptersBytes || adoptersBytes.length === 0) throw new Error('Adopters not initialized');
-
-        const adopters = JSON.parse(adoptersBytes.toString());
-        adopters[petId] = ctx.clientIdentity.getID();
-
-        await ctx.stub.putState('adopters', Buffer.from(JSON.stringify(adopters)));
-        return petId;
-    }
-
-    async getAdopters(ctx) {
-        const adoptersBytes = await ctx.stub.getState('adopters');
-        if (!adoptersBytes || adoptersBytes.length === 0) throw new Error('No adopters found');
-        return JSON.stringify(JSON.parse(adoptersBytes.toString()));
+    // Optional: add more logging to other functions
+    async queryAll(ctx) {
+        console.log('[CHAINCODE] queryAll called.');
+        // your logic here
     }
 }
 
