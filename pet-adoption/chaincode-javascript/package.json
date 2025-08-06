@@ -1,13 +1,10 @@
 {
-  "name": "adoption-contract",
+  "name": "petshop",
   "version": "1.0.0",
-  "description": "Pet Shop Adoption Chaincode",
+  "description": "Hyperledger Fabric Pet Shop Chaincode",
   "main": "index.js",
   "scripts": {},
   "dependencies": {
-    "fabric-contract-api": "^2.5.0"
-  },
-  "engines": {
-    "node": ">=12"
+    "fabric-contract-api": "^2.2.0"
   }
 }
